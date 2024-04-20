@@ -462,6 +462,61 @@ def integration_render():
     return "integration over"
 
 
+@app.route('/getListAndCharacters', methods=['GET'])
+def getList():
+    print("in getList")
+    listName = request.args.get('listName')
+
+    # print(listName)
+
+    # 指定文件夹路径
+    folder_path = '/path/to/your/folder/'
+
+    # 拼接文件路径
+    file_path = '.././lists/'+listName+'.txt'
+    print(file_path)
+
+    # 打开文件并读取内容
+    try:
+        with open(file_path, 'r',encoding='utf-8') as file:
+            ori_content = file.read().split('\n')
+
+            print(ori_content)
+
+
+    except FileNotFoundError:
+        print("文件不存在或路径错误。")
+    except IOError:
+        print("文件读取错误。")
+
+
+    content=[]
+    for row in ori_content:
+        if len(row) == 0:
+            continue
+        content.append(row)
+
+    ret={"list":content,
+         "characters":[]}
+    if content:
+        for ch in content:
+            if len(ch)==0:
+                continue
+            ch_path='.././characters/'+str(ord(ch))+'.json'
+            with open(ch_path,'r',encoding='utf-8') as f:
+                jsondata=json.load(f)
+                print(jsondata)
+                ret['characters'].append(jsondata)
+
+    # ret = {"list": content[:2],
+    #        "characters": ret['characters'][:2]}
+    print(ret)
+
+    # print('刀',ord('刀'))
+    # print('刁',ord('刁'))
+    return ret
+
+
 
 if __name__ == '__main__':
     # app.add_url_rule('/', 'hello', hello_world)   # 与@app二选一

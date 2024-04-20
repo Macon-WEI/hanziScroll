@@ -48,7 +48,7 @@ html {
 .inputRenderLabelBtn {
     cursor: pointer;
     border: 2px solid #982f13;
-    border-radius: 3px;
+    border-radius: 15px;
     height: 56px;
     width: 100px;
     font-size: 28px;
@@ -57,6 +57,11 @@ html {
     margin-left: -115px;
     background-color: #982f13;
 }
+
+.inputRenderLabelBtn:hover{
+    background-color: #69210D; /* 按钮悬停时的背景颜色 */
+}
+
 
 /* 将完成图标放在输入框的右上角 */
 #container img {
@@ -105,7 +110,7 @@ html {
 .bbtn {
     cursor: pointer;
     border: 1px solid #982f13;
-    border-radius: 20px;
+    border-radius: 15px;
     font-size: 24px;
     font-weight: 600;
     color: white;
@@ -516,12 +521,80 @@ p {
 }
 
 #back2homeDiv{
-    top:5%;
-    left: 10%;
+    top:2%;
+    left: 12%;
     /*z-index: 999999;*/
     /*background-color: white;*/
 }
 
 .hidden-div, .hidden-div * {
     display: none;
+}
+
+#textArea {
+    margin-top: 10%;
+}
+
+#textArea p{
+    margin-bottom: 1%;
+    margin-top: 2%;
+    font-size: 50px;
+    word-wrap: break-word;
+}
+
+#practiceBtnDiv {
+    display: none;
+    position: absolute;
+    top: 35%;
+    right: 15%;
+    width:15%;
+}
+
+#dropdownContent {
+    word-wrap: break-word;
+}
+
+.practiceBtn {
+    cursor: pointer;
+    border: 0px solid #982f13;
+    border-radius: 12px;
+    height: 56px;
+    width: 100px;
+    font-size: 28px;
+    font-weight: 600;
+    color: white;
+    /*margin-left: -115px;*/
+    background-color: #982f13;
+    transition: background-color 0.3s; /* 按钮颜色变化动画 */
+    margin-top: 8%;
+    margin-bottom: 2%;
+}
+
+/* 按钮悬停样式 */
+.practiceBtn:hover {
+    background-color: #69210D; /* 按钮悬停时的背景颜色 */
+}
+
+
+
+/* 下拉内容容器样式 */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.3); /* 半透明背景颜色 */
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* 下拉内容阴影 */
+    padding: 10px;
+    z-index: 1;
+    border-radius: 5px; /* 下拉内容容器圆角 */
+
+
+}
+
+/* 下拉内容样式 */
+.dropdown-content p {
+    margin: 0;
+    padding: 5px 0;
+    font-size: 24px;
+    color: white;
 }

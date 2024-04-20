@@ -9,6 +9,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <title>辞海古卷</title>
     <link href="./dev.css" rel="stylesheet" type="text/css" />
+    <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/underscore/underscore-min.js"></script>
+    <script src="all-matcher.js"></script>
+    <script src="handwriting.js"></script>
+
     <!-- ttf文件及生成的png图片存放在canvasScroll/ttf/文件夹下 -->
     <style>
         @font-face {
@@ -34,7 +39,7 @@
 </head>
 
 <body>
-    <div id="selections" style="display: none">
+    <div id="selections" style="display: none;font-size: 30px">
 
     </div>
     <div id="image"></div>
@@ -56,6 +61,36 @@
 <!--            <div id="imagePreview"></div>-->
         </label>
     </div>
+    <div id="practiceDiv" style="display:none">
+        <div id="practiceContainer" style="display: none;">
+            <div id="textArea" >
+                <p id="pinyin"></p>
+                <p id="definition"></p>
+            </div>
+    
+            <div id="canvasArea" >
+                <canvas id="practiceCanvas"></canvas>
+            </div>
+    
+        </div>
+        <div id="practiceBtnDiv" style="display: none;">
+            <button id="practiceRedoBtn" onclick="onRedo()" class="practiceBtn">重写</button>
+            <div id="dropdownDiv" >
+                <button id="dropBtn" onclick="toggleDropdown()" class="practiceBtn">汉字详情</button>
+                <div id="dropdownContent" class="dropdown-content" style="display: none;">
+                    <p id="show_pinyin"></p>
+                    <p id="show_definition"></p>
+                    <p id="show_radical"></p>
+                    <p id="show_decomposition"></p>
+                    <p id="show_hint"></p>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+    
 
     <div id="waitRender" class="modal hidden">
         <p>正在渲染中，请稍后...</p>
@@ -88,10 +123,13 @@
         <span class="returnPreviousP">返回</span>
     </span>
 
-    <canvas width="1600" height="1200" class="myCanvas" id="canvas"></canvas>
+    <div id="componentRender" style="width: 100%; height: 100%;">
+        <canvas width="1600" height="1200" class="myCanvas" id="canvas"></canvas>
     <button id="clearbtn" class="bbtn" onclick="clearDraw()">清除</button>
     <button id="selectbtn" class="bbtn" onclick="slectedOver()">选择完毕</button>
     <button id="dwnbtn" class="bbtn" onclick="download()">下载</button>
+    </div>
+    
 
     <!-- 隐藏的输入框，等待显示 -->
     <div id="container">
@@ -151,8 +189,8 @@
     console.log(userCookie);
 
     //设置axios请求公共头
-    axios.defaults.baseURL = 'https://scroll.ihanzi.net/api'
-    // axios.defaults.baseURL = 'http://127.0.0.1:8080'
+    // axios.defaults.baseURL = 'https://scroll.ihanzi.net/api'
+    axios.defaults.baseURL = 'http://127.0.0.1:8080'
 
     // 页面加载完成后执行操作
     window.onload = function () {
@@ -165,10 +203,12 @@
         uploadImageFile=null;
 
         phase = 0
-        //展示军火
-        showWelcomeElement()
-        document.body.addEventListener("click", showGif);
+        showSelection();
 
+        //展示军火
+        // showWelcomeElement()
+        // document.body.addEventListener("click", showGif);
+// 
     };
 
     //生成随机用户ID
@@ -428,6 +468,18 @@
                 hideAllChildren(document.getElementById("uploadContainer"));
                 break;
             case PRACTICE:
+                // hideAllChildren(document.getElementById("practiceDiv"));
+                document.getElementById("practiceDiv").style.display="none";
+                handwriting=null;
+                const old_canvas=document.getElementById("practiceCanvas");
+                const new_canvas=document.createElement('canvas');
+                new_canvas.id=old_canvas.id;
+                old_canvas.parentNode.replaceChild(new_canvas,old_canvas);
+                ticker = null;
+                element = null;
+                kCanvasSize = screenWidth*0.4<screenHeight*0.6 ? screenWidth*0.4:screenHeight*0.6;
+                screenWidth = window.innerWidth;
+                screenHeight = window.innerHeight;
                 break;
         }
         funcOption=NOOPTION;
@@ -444,6 +496,11 @@
         selection3.style.display="none";
         selections.style.display="none";
         imgDiv.style.display="none";
+        // var componentRenderDiv = document.getElementById('componentRender');
+        // componentRenderDiv.style.backgroundImage = 'url(' + "'./new-ui/bg-img-01.png'" + ')';
+        // componentRenderDiv.style.backgroundRepeat="no-repeat";
+        // componentRenderDiv.style.backgroundSize="cover";
+        // componentRenderDiv.style.backgroundPosition="center center";
         var canvas = document.getElementById('canvas');
         canvas.style.backgroundImage = 'url(' + "'./new-ui/bg-img-01.png'" + ')';
         writeOnload();
@@ -452,6 +509,12 @@
     function selectWritePractice(){
         console.log("selectWritePractice");
         funcOption=PRACTICE;
+        selection1.style.display="none";
+        selection2.style.display="none";
+        selection3.style.display="none";
+        selections.style.display="none";
+        practiceWrite();
+
     }
 
     function selectIntegrationRender(){
@@ -476,7 +539,7 @@
         selection1=document.createElement("button");
         selection2=document.createElement("button");
         selection3=document.createElement("button");
-        var btnwidth="8%",btnheight="7%",btnpos="absolute",btnleft="47.5%";
+        var btnwidth="8%",btnheight="7%",btnpos="absolute",btnleft="47.5%",fontsize="30px";
         var btntop=37,btntop_step=10;
         selection1.classList.add("bbtn");
         selection1.id="selection1";
@@ -487,6 +550,7 @@
         selection1.style.width=btnwidth;
         selection1.style.height=btnheight;
         selection1.style.position=btnpos;
+        selection1.style.fontSize=fontsize;
         selection1.innerText="部件渲染";
 
 
@@ -498,6 +562,7 @@
         selection2.style.height=btnheight;
         selection2.style.position=btnpos;
         selection2.innerText="书写练习";
+        selection2.style.fontSize=fontsize;
 
 
 
@@ -509,6 +574,7 @@
         selection3.style.height=btnheight;
         selection3.style.position=btnpos;
         selection3.innerText="融入渲染";
+        selection3.style.fontSize=fontsize;
 
 
         selections.appendChild(selection1);
@@ -533,6 +599,78 @@
 
 
     }
+
+</script>
+
+
+<!-- 书写练习 -->
+<script>
+
+
+
+    function practiceWrite()
+    {
+        var practiceContainer,textArea,canvasArea,practiceBtnDiv;
+        console.log("******************practiceWrite******************");
+        back2homeDiv=document.getElementById("back2homeDiv");
+        back2homeDiv.style.display="block";
+        var backBtn=document.getElementById("back2homeBtn");
+        backBtn.innerText="首页";
+        backBtn.classList.add("inputRenderLabelBtn");
+        backBtn.addEventListener("click",back2home);
+
+        imgDiv=document.getElementById("image");
+        imgDiv.style.display="none";
+
+        document.getElementById("dropdownContent").style.display="none";
+
+        practiceDiv=document.getElementById("practiceDiv");
+        practiceDiv.style.display="block";
+        practiceDiv.style.backgroundSize="cover";
+        practiceDiv.style.backgroundImage='url(' + "'./new-ui/integrationRender.jpg'" + ')';
+        practiceDiv.style.backgroundRepeat="no-repeat";
+        practiceDiv.style.backgroundPosition="center center";
+        practiceDiv.classList.remove("hidden-div");
+        practiceDiv.classList.add("integrationContainer");
+        practiceDiv.style.width="100%";
+        practiceDiv.style.height="100%";
+
+        practiceContainer=document.getElementById("practiceContainer");
+        practiceContainer.style.display="block";
+        practiceContainer.style.height="100%";
+        practiceContainer.style.width="40%";
+        practiceContainer.style.left="30%";
+        practiceContainer.style.position="absolute";
+        
+
+        textArea=document.getElementById("textArea");
+        textArea.style.height="20%";
+        textArea.style.width="100%";
+        // textArea.style.display="flex";
+        textArea.style.position="relative";
+        textArea.style.textAlign="center";
+
+        canvasArea=document.getElementById("canvasArea");
+        canvasArea.style.display="inline-block";
+        // canvasArea.style.backgroundColor="red";
+        canvasArea.style.width="100%";
+        canvasArea.style.height="60%";
+        canvasArea.style.textAlign="center";
+        canvasArea.style.position="relative";
+
+
+        practiceBtnDiv=document.getElementById("practiceBtnDiv");
+        practiceBtnDiv.style.display="inline-block";
+
+
+        var practiceBtn=document.getElementById("dropBtn");
+        practiceBtn.style.width="160px";
+
+        onRendered();
+
+
+    }
+
 
 </script>
 
@@ -631,7 +769,7 @@
         inputDiv.classList.add("integrationContainer");
         inputDiv.style.display="block";
         inputDiv.style.backgroundSize="cover";
-        inputDiv.style.backgroundImage='url(' + "'./new-ui/bg-img-01.png'" + ')';
+        inputDiv.style.backgroundImage='url(' + "'./new-ui/integrationRender.jpg'" + ')';
         inputDiv.style.backgroundRepeat="no-repeat";
         inputDiv.style.backgroundPosition="center center";
         inputDiv.style.width="100%";
