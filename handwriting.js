@@ -1223,12 +1223,14 @@ const kCrossWidth = 1 / 256;
 const kStrokeWidth = 1 / 32;
 
 const kBrushColor   = '#888888';
-const kHintColor    = '#00c0ff';
+// const kHintColor    = '#00c0ff';
+const kHintColor    = '#f47983';
 const kRevealColor  = '#cccccc';
 const kStrokeColor  = '#000000';
 
 // Colors for EXCELLENT, GOOD, FAIR, and POOR result values.
-const kResultColors = ['#84b4d8', '#88c874', '#c0c080', '#e87878'];
+// const kResultColors = ['#84b4d8', '#88c874', '#c0c080', '#e87878'];
+const kResultColors = ['#84b4d8', '#88c874', '#88c874', '#88c874'];
 
 
 
@@ -1787,7 +1789,8 @@ const updataDescription=()=>{
 
   if(pinyin) {
     pinyinP.textContent = pinyin;
-    show_pinyinP.textContent="pinyin: "+pinyin;
+    // show_pinyinP.textContent="pinyin: "+pinyin;
+    show_pinyinP.textContent="拼音: "+pinyin;
   }
   else {
     pinyinP.textContent = "";
@@ -1796,7 +1799,8 @@ const updataDescription=()=>{
 
   if(definition && definition.length>0) {
     definitionP.textContent = definition;
-    show_definitionP.textContent = "definition: "+definition;
+    // show_definitionP.textContent = "definition: "+definition;
+    show_definitionP.textContent = "英文含义: "+definition;
   }
   else {
     definitionP.textContent = "";
@@ -1804,14 +1808,16 @@ const updataDescription=()=>{
   }
 
   if(task.data.radical && task.data.radical.length>0){
-    show_radicalP.textContent ="radical: "+task.data.radical ;
+    // show_radicalP.textContent ="radical: "+task.data.radical ;
+    show_radicalP.textContent ="偏旁部首: "+task.data.radical ;
   }
   else{
     show_radicalP.textContent ="";
   }
 
   if(task.data.decomposition && task.data.decomposition.length>0 && task.data.decomposition!=="？"){
-    show_decompositionP.textContent ="decomposition: "+task.data.decomposition ;
+    // show_decompositionP.textContent ="decomposition: "+task.data.decomposition ;
+    show_decompositionP.textContent ="构字组件: "+task.data.decomposition ;
   }
   else{
     show_decompositionP.textContent ="";

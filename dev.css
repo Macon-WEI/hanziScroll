@@ -75,8 +75,8 @@ html {
 #qrcode {
     display: none;
     position: fixed;
-    top: 70%;
-    left: 75%;
+    top: 57%;
+    left: 73%;
 }
 
 #clearbtn {
@@ -111,7 +111,8 @@ html {
     cursor: pointer;
     border: 1px solid #982f13;
     border-radius: 15px;
-    font-size: 24px;
+    /*font-size: 24px;*/
+    font-size: 40px;
     font-weight: 600;
     color: white;
     background-color: #982f13;
@@ -133,7 +134,7 @@ html {
     cursor: pointer;
     display: none;
     position: absolute;
-    top: 20px;
+    top: 9%;
     left: 70px;
     width: 100px;
     text-align: center;
@@ -144,7 +145,7 @@ html {
     cursor: pointer;
     display: none;
     position: absolute;
-    top: 20px;
+    top: 9%;
     /* left:70px; */
     width: 150px;
     /*设置长一点，避免让文字换行*/
@@ -157,8 +158,8 @@ html {
     cursor: pointer;
     display: none;
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 9%;
+    left: 80px;
     width: 80px;
     text-align: center;
     font-weight: 700;
@@ -168,8 +169,8 @@ html {
     cursor: pointer;
     display: none;
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 9%;
+    left: 80px;
     width: 80px;
     text-align: center;
     font-weight: 700;
@@ -321,6 +322,8 @@ p {
 }
 
 
+
+
 /* 信息框 */
 .wrap {
     width: 68vw;
@@ -454,17 +457,21 @@ p {
     /*max-height: 100%;*/
 
     /*background-color: #4CAF50;*/
-    border: none;
+    /*border: none;*/
     color: white;
-    padding: 20px;
+    /*padding: 20px;*/
     text-align: center;
     text-decoration: none;
     display: none;
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
-    /*overflow: hidden;*/
+    overflow: hidden;
     position: relative;
+    border-style: dashed;
+    border-width: 5px;
+    border-color: #982f13;
+
 }
 
 #uploadImageLable:hover div{
@@ -476,7 +483,7 @@ p {
 /*    width: 200px;*/
 /*}*/
 
-#imagePreview {
+.imagePreview {
     /*max-width: 100%;*/
     /*max-height: 100%;*/
     height: 100%;
@@ -487,18 +494,36 @@ p {
     /*left: 0;*/
     top: 50%;
     left: 50%;
+    padding: 20px;
+    /*border: #982f13;*/
+    /*border-style: dashed;*/
+    /*border-width: 5px;*/
     transform: translate(-50%, -50%);
     display: none;
     cursor: pointer;
+    overflow: hidden; /* 隐藏超出容器的部分 */
     /*object-fit: scale-down;*/
     /*background-size: cover;*/
     /*background-size: contain; !* 背景图片按原比例缩放，尽可能填满区域 *!*/
     /*background-repeat: no-repeat; !* 禁止背景图片重复 *!*/
 }
+
+#integrationShow {
+    border-style: dashed;
+    padding: 0px 20px;
+    border-width: 5px;
+    border-color: #982f13;
+}
+
 .imggg {
     max-width: 100%;
     max-height: 100%;
-    display: none;
+    /*width: auto;*/
+    display: block;
+
+    /*width: 100%;*/
+    /*height: 100%;*/
+    /*object-fit: cover;*/
 
     /*max-width: 100%;*/
     /*height: auto;*/
@@ -549,6 +574,11 @@ p {
     right: 15%;
     width:15%;
 }
+#dropdownDiv {
+    right: 15%;
+    width:15%;
+    position: absolute;
+}
 
 #dropdownContent {
     word-wrap: break-word;
@@ -597,4 +627,171 @@ p {
     padding: 5px 0;
     font-size: 24px;
     color: white;
+}
+
+
+
+
+
+#header {
+    display: none;
+    width: 100%;
+    /*justify-content: space-between;*/
+    /*align-items: center;*/
+    /*padding: 10px 20px;*/
+    /*background-color: #0078d4;*/
+    color: white;
+    position: fixed;
+    top: 0;
+    z-index: 998;
+
+}
+
+#header_nav {
+    margin-left: 10%;
+    margin-right: 5%;
+    width: 80%;
+    height: 7%;
+    /*background-color: aquamarine;*/
+    background-color: #BDC5BB;
+    display: inline-block;
+
+
+    /*display: flex;*/
+    /*justify-content: space-between;*/
+    /*align-items: center;*/
+    /*padding: 10px 20px;*/
+}
+
+#header_nav ul{
+    list-style-type: none;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    display: flex; /* 使用 Flexbox 布局 */
+
+}
+
+#nav_content {
+    float: left;
+}
+
+
+#header_nav li:last-child {
+    margin-right: 0; /* 最后一个列表项不设置右边距 */
+}
+
+#header_nav li a {
+    display: block;
+    color: white;
+    text-align: center;
+    font-size: 24px;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+#header_nav li a:hover:not(.active) {
+    background-color: #555; /* 鼠标悬停时的背景色 */
+}
+
+.active {
+    background-color: #982f13 !important;
+}
+
+
+#user_content{
+
+    float: right;
+}
+
+#nav_div{
+    position: relative;
+    left: 0;
+}
+
+#user_div{
+    position: relative;
+    right: 0;
+}
+
+
+
+
+
+
+#about_div {
+    display: none;
+    position: absolute;
+    margin-left: 15%;
+    top: 7%;
+    height: 90%; /* 设置容器高度为视口高度 */
+}
+
+#about_nav {
+    flex: 0 0 20%; /* 左侧导航栏占据20%的宽度 */
+    background-color: #f0f0f0;
+}
+
+#about_nav ul{
+    list-style-type: none;
+}
+
+#about_nav ul a{
+    list-style: none;
+    text-decoration: none;
+}
+
+
+
+#about_content {
+    flex: 1; /* 右侧内容区域占据剩余的宽度 */
+    padding: 20px;
+}
+
+.teacher-info {
+    text-align: center; /* 居中显示 */
+}
+
+.member {
+    display: flex;
+    flex-wrap: wrap; /* 允许成员信息自动换行 */
+    justify-content: space-between; /* 在每行中平均分配空间 */
+    margin: 10px 0;
+
+}
+
+.member-item {
+    width: calc(31% - 10px); /* 每个成员信息项占据50%的宽度，减去间距 */
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding-left: 2%;
+    display: flex; /* 使用 Flexbox 布局 */
+    align-items: center; /* 垂直居中 */
+    border: 3px solid black;
+}
+
+.member-item div {
+    /*margin-left: 3%;*/
+
+    /*width: 200px;*/
+    padding: 3%;
+    width: calc(100% - 100px);
+}
+
+.member-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%; /* 圆形头像 */
+    margin-right: 10px; /* 右侧留出间距 */
+}
+
+.divider {
+    width: 10%; /* 设置分割线宽度 */
+    height: 2%; /* 设置分割线高度 */
+    background-color: #eacd76;/*割线颜色 */
+    margin: 20px 0; /* 设置分割线与上下内容的间距 */
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 18px;
 }

@@ -157,7 +157,8 @@ def getMeaning():
         result = {
             "success": True,
             "message": str(e),
-            "meaning": "测试含义"
+            # "meaning": "测试含义"
+            "meaning": ""
         }
 
     print(result)
@@ -337,6 +338,7 @@ def get_render():
     json_data = json.dumps(DATA).encode('utf8')
     response = requests.post(url=API_URL, headers=HEADERS, data=json_data)
     res = json.loads(response.text)
+    print("response",response.status_code)
 
     parts = base64_data.split(',')
     head = parts[0]
@@ -428,7 +430,12 @@ def cn_to_en():
     else:
         return jsonify({'status': 'error', 'error': result['error_msg']})
 
-
+# 修正base64填充
+def correct_base64_padding(base64_string):
+    missing_padding = len(base64_string) % 4
+    if missing_padding != 0:
+        base64_string += '=' * (4 - missing_padding)
+    return base64_string
 
 @app.route('/integration', methods=['POST'])
 def integration_render():
@@ -443,23 +450,140 @@ def integration_render():
     cn_prompt = request.form['text']
     print("cn_prompt is ",cn_prompt)
 
-    img_base64 = request.form['image']
-    print(img_base64)
-    img=base64.b64decode(img_base64.split(',')[1])
 
-    nparr = np.frombuffer(img, np.uint8)
-    # 解码NumPy数组为OpenCV图像格式
-    print(nparr)
-    img = cv.imdecode(nparr, cv.IMREAD_UNCHANGED)
-    width, height, _ = img.shape
-    cv.imwrite('saved_image.jpg', img)
+    # 调用百度翻译 API 进行翻译
+    params = {
+        'q': cn_prompt,
+        'from': 'zh',
+        'to': 'en',
+        'appid': APP_ID,
+        'salt': random.randint(10000, 99999),
+        'sign': '',  # 签名在下面生成
+    }
+
+    sign_str = APP_ID + cn_prompt + str(params['salt']) + SECRET_KEY
+    sign = hashlib.md5(sign_str.encode()).hexdigest()
+    params['sign'] = sign
+    try:
+        response = requests.get(BAIDU_TRANSLATOR_API_URL, params=params)
+        result = response.json()
+
+    except Exception as e:
+        print(e)
+        result=None
+
+    # 如果翻译成功，返回翻译结果
+    if result and 'trans_result' in result:
+        prompt=result['trans_result'][0]['dst']
+    # 否则返回错误信息
+    else:
+        prompt=None
+
+    img_base64 = request.form['image']
+    # print(img_base64)
+    # img=base64.b64decode(img_base64.split(',')[1])
+    #
+    # nparr = np.frombuffer(img, np.uint8)
+    # # 解码NumPy数组为OpenCV图像格式
+    # # print(nparr)
+    # img = cv.imdecode(nparr, cv.IMREAD_UNCHANGED)
+    # RenderLink = "http://10.50.31.201:7862"
+    RenderLink = "http://10.50.31.201:21789/controlnet"
+    API_URL = RenderLink + "/sdapi/v1/txt2img"
+    HEADERS = {
+        "Content-Type": "application/json"
+    }
+    if prompt:
+        prompt+=",masterpiece,realistic,8k"
+    else:
+        prompt=cn_prompt+"，杰作"+"，真实"+",8k"
+
+    print(prompt)
+    data = {
+        "prompt": prompt,
+        # "negative_prompt": "blurry, watermark, text, signature, frame, cg render, lights",
+        "negative_prompt": "white background,simple background",
+        "batch_size": 1,
+        "cfg_scale": 7,
+        # "clip_skip": 2,
+        "restore_faces": False,
+        "sampler_name": "DPM++ SDE Karras",
+        "seed": -1,
+        "steps": 40,
+        "tiling": False,
+        "width": 512,
+        "height": 512,
+        "alwayson_scripts": {
+            "controlnet":
+                {
+                    "args": [
+                        {
+                            "enabled": True,  # 启用
+                            "control_mode": 0,
+                            # 对应webui 的 Control Mode 可以直接填字符串 推荐使用下标 0 1 2
+                            "model": "control_v11f1e_sd15_tile [a371b31b]",
+                            # 对应webui 的 Model
+                            "module": "tile_resample",
+                            # 对应webui 的 Preprocessor
+                            "weight": 0.65,  # 对应webui 的Control Weight
+                            "resize_mode": "Crop and Resize",
+                            # "threshold_a": 200,  # 阈值a 部分control module会用上
+                            # "threshold_b": 245,  # 阈值b
+                            # "guidance_start": 0,  # 什么时候介入 对应webui 的 Starting Control Step
+                            # "guidance_end": 0.7,  # 什么时候退出 对应webui 的 Ending Control Step
+                            "pixel_perfect": True,  # 像素完美
+                            "processor_res": 512,  # 预处理器分辨率
+                            "save_detected_map": False,
+                            # 因为使用了 controlnet API会返回生成controlnet的效果图，默认是True，如何不需要，改成False
+                            "input_image": img_base64,  # 图片 格式为base64
+
+                        }
+                        # 多个controlnet 在复制上面一个字典下来就行
+                    ]
+                }
+        },
+
+    }
+
+    json_data = json.dumps(data).encode('utf8')
+    response = requests.post(url=API_URL, headers=HEADERS, data=json_data)
+    print("receive response")
+    res = json.loads(response.text)
+
+    parts = img_base64.split(',')
+    head = parts[0]
+    # res_img_base64 = head + ',' + res["images"][0]
+    res_img_base64 = res["images"][0]
+    res_img_base64 = correct_base64_padding(res_img_base64)
+    # print(res_img_base64)
+
+    decoded_data = base64.b64decode(res_img_base64)
+
+    # 将原始数据转换为numpy数组
+    np_data = np.frombuffer(decoded_data, np.uint8)
+
+    # 从numpy数组中解码图像
+    image = cv.imdecode(np_data, cv.IMREAD_COLOR)
+
+    # 保存图像为PNG文件
+    cv.imwrite("./text2img.png", image)
+    ret = {
+        'base64': head + ',' + res_img_base64,
+        'width': 512,
+        'height': 512
+    }
+
+
+
+    # width, height, _ = img.shape
+    # cv.imwrite('saved_image.jpg', img)
     # img = request.files['image']
 
 
-    print("img is ",img)
+    # print("img is ",img)
 
 
-    return "integration over"
+    return jsonify(ret)
 
 
 @app.route('/getListAndCharacters', methods=['GET'])
@@ -474,14 +598,14 @@ def getList():
 
     # 拼接文件路径
     file_path = '.././lists/'+listName+'.txt'
-    print(file_path)
+    # print(file_path)
 
     # 打开文件并读取内容
     try:
         with open(file_path, 'r',encoding='utf-8') as file:
             ori_content = file.read().split('\n')
 
-            print(ori_content)
+            # print(ori_content)
 
 
     except FileNotFoundError:
@@ -505,12 +629,12 @@ def getList():
             ch_path='.././characters/'+str(ord(ch))+'.json'
             with open(ch_path,'r',encoding='utf-8') as f:
                 jsondata=json.load(f)
-                print(jsondata)
+                # print(jsondata)
                 ret['characters'].append(jsondata)
 
     # ret = {"list": content[:2],
     #        "characters": ret['characters'][:2]}
-    print(ret)
+    # print(ret)
 
     # print('刀',ord('刀'))
     # print('刁',ord('刁'))
