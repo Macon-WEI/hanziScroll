@@ -206,12 +206,9 @@ def get_demo():
     img = splitSquare(img)
     cv.imwrite('resize_image.' + img_type, img)  # 保存输入的图片
 
-    ####################
-    # 笑死我来
-    # 你识别模型是只能识别test.jpg
-    # 你得先将图片转码为 JPG 格式
-    # 才能正常识别
-    ####################
+
+    # 识别模型是只能识别test.jpg,得先将图片转码为 JPG 格式才能正常识别
+
     # 将img转为jpg格式的图像数据
     _, img_encoded = cv.imencode('.jpg', img)
     # 将jpg格式的图像数据编码为base64字符串

@@ -1200,7 +1200,7 @@
         integrationInputBox=document.getElementById("inputIntegrationRender");
         integrationInputBox.classList.add("inputRenderLabelBar");
         integrationInputBox.type="text";
-        integrationInputBox.placeholder="此处应显示一些渲染词提示";
+        integrationInputBox.placeholder="例如：大海，波浪，鸟瞰视角等";
         integrationInputBox.style.top=String(integrationInputBoxTop)+"%";
         integrationInputBox.style.left=String(integrationInputBoxLeft)+"%";
         integrationInputBox.style.position="absolute";
@@ -1214,7 +1214,7 @@
         integrationInputButton.classList.add("inputRenderLabelBtn");
         integrationInputButton.innerText="开始渲染";
         integrationInputButton.addEventListener("click",StartRender);
-        integrationInputButton.style.top=String(integrationInputBoxTop-0.5)+"%";
+        integrationInputButton.style.top=String(integrationInputBoxTop)+"%";
         integrationInputButton.style.left=String(integrationInputBoxLeft+inputBoxWid+8)+"%";
         integrationInputButton.style.position="absolute";
         integrationInputButton.style.width="150px";
@@ -1464,7 +1464,7 @@
         }
     }
 
-    //为了避免鼠标移动太快导致小圆点出现断层，gpt帮我写了个插值补色函数，我哭似，我真的哭似
+    //为了避免鼠标移动太快导致小圆点出现断层，写了个插值补色函数
     //(x1,y1)为起始点，(x2,y2)为目标点
     function interpolateAndDraw(x1, y1, x2, y2) {
         var dx = x2 - x1;
@@ -1923,7 +1923,7 @@
             }
         })
 
-        //再来操作phase也不迟！！！
+
         checkPhase()
 
         //读取画布上有鼠标被按下，实时更新位置显示并判定是否拖动

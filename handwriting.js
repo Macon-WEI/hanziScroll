@@ -1634,6 +1634,7 @@ class Handwriting {
       callback && callback();
     });
   }
+  
   _click() {
     const timestamp = new Date().getTime();
     const double_tap_speed = this._settings.double_tap_speed;
@@ -1823,12 +1824,13 @@ const updataDescription=()=>{
     show_decompositionP.textContent ="";
   }
 
-  if(task.data.etymology && task.data.etymology['hint'].length>0){
-    show_hintP.textContent ="hint: "+task.data.etymology['hint'];
-  }
-  else{
-    show_hintP.textContent ="";
-  }
+  show_hintP.textContent =""
+  // if(task.data.etymology && task.data.etymology['hint'].length>0){
+  //   show_hintP.textContent ="hint: "+task.data.etymology['hint'];
+  // }
+  // else{
+  //   show_hintP.textContent ="";
+  // }
 
   // if()
   var dropdownContent = document.getElementById("dropdownContent");
@@ -1955,8 +1957,9 @@ const onRedo=()=>{
   item.tasks[item.index].penalties=0;
   item.tasks[item.index].recording=[];
   item.tasks[item.index].result=null;
-  handwriting.clearStage();
-  handwriting._reset();
+  handwriting.clear(true);
+  // handwriting.clearStage();
+  // handwriting._reset();
 
 }
 
