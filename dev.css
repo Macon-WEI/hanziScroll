@@ -46,15 +46,24 @@ html {
 }
 
 .inputRenderLabelBtn {
+    /*cursor: pointer;*/
+    /*border: 2px solid #982f13;*/
+    /*border-radius: 15px;*/
+    /*height: 56px;*/
+    /*width: 100px;*/
+    /*font-size: 28px;*/
+    /*font-weight: 600;*/
+    /*color: white;*/
+    /*margin-left: -115px;*/
+    /*background-color: #982f13;*/
+
     cursor: pointer;
-    border: 2px solid #982f13;
+    border: 1px solid #982f13;
     border-radius: 15px;
-    height: 56px;
-    width: 100px;
-    font-size: 28px;
+    /*font-size: 24px;*/
+    font-size: 40px;
     font-weight: 600;
     color: white;
-    margin-left: -115px;
     background-color: #982f13;
 }
 
@@ -474,10 +483,20 @@ p {
 
 }
 
-#uploadImageLable:hover div{
+/*#uploadImageLable:hover div{*/
+/*    !*background-color: #45a049;*!*/
+/*    opacity: 0.8; !* 鼠标悬停时降低透明度 *!*/
+/*}*/
+
+#uploadImageLable:hover #imggg{
     /*background-color: #45a049;*/
-    opacity: 0.8; /* 鼠标悬停时降低透明度 */
+    /*opacity: 0.8; !* 鼠标悬停时降低透明度 *!*/
+    content: url("./new-ui/upload2.png");
+
+
+
 }
+
 
 /*#imagePreview img {*/
 /*    width: 200px;*/
@@ -507,6 +526,8 @@ p {
     /*background-size: contain; !* 背景图片按原比例缩放，尽可能填满区域 *!*/
     /*background-repeat: no-repeat; !* 禁止背景图片重复 *!*/
 }
+
+
 
 #integrationShow {
     border-style: dashed;
@@ -558,6 +579,10 @@ p {
 
 #textArea {
     margin-top: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 #textArea p{
@@ -578,6 +603,41 @@ p {
     right: 15%;
     width:15%;
     position: absolute;
+    box-sizing: border-box;
+
+
+    background-color: rgba(237, 141, 115, 0.6);;
+    color: white;
+    /*width: 200px;*/
+    /*border-radius: 5px;*/
+    /*box-sizing: border-box;*/
+
+}
+
+.dropdown-btn{
+    cursor: pointer;
+    padding: 15px;
+    display: flex;
+
+
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    box-sizing: border-box;
+    width: 100%;
+
+    /*border: 1px solid #982f13;*/
+    /*border-radius: 15px;*/
+    font-size: 40px;
+    font-weight: 600;
+    color: white;
+    /*background-color: #982f13;*/
+
+}
+
+.dropdown-btn:hover {
+    background-color: #E44D24;
+
 }
 
 #dropdownContent {
@@ -610,13 +670,16 @@ p {
 /* 下拉内容容器样式 */
 .dropdown-content {
     display: none;
+    width: 100%;
     position: absolute;
+    border-top: 1px solid #ddd;
     background-color: rgba(255, 255, 255, 0.3); /* 半透明背景颜色 */
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* 下拉内容阴影 */
     padding: 10px;
     z-index: 1;
-    border-radius: 5px; /* 下拉内容容器圆角 */
+    /*border-radius: 5px; !* 下拉内容容器圆角 *!*/
+    box-sizing: border-box;
 
 
 }
@@ -627,6 +690,7 @@ p {
     padding: 5px 0;
     font-size: 24px;
     color: white;
+    box-sizing: border-box;
 }
 
 
@@ -648,12 +712,13 @@ p {
 }
 
 #header_nav {
-    margin-left: 10%;
+    margin-left: 8%;
     margin-right: 5%;
     width: 80%;
     height: 7%;
     /*background-color: aquamarine;*/
-    background-color: #BDC5BB;
+    /*background-color: #BDC5BB;*/
+    background-color: rgba(255,255,255,0);
     display: inline-block;
 
 
@@ -685,7 +750,7 @@ p {
     display: block;
     color: white;
     text-align: center;
-    font-size: 24px;
+    font-size: 38px;
     padding: 14px 16px;
     text-decoration: none;
 }
@@ -695,7 +760,8 @@ p {
 }
 
 .active {
-    background-color: #982f13 !important;
+    /*background-color: #982f13 !important;*/
+    color: #F0A192 !important;
 }
 
 

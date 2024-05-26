@@ -53,7 +53,7 @@
                 <li><a id="toComponentRender" href="#" onclick="selectComponentRender2()">部件渲染</a></li>
                 <li><a id="toIntegrationRender" href="#" onclick="selectIntegrationRender2()">背景渲染</a></li>
                 <li><a id="toWritePractice" href="#" onclick="selectWritePractice2()">书写练习</a></li>
-                <li><a id="toaboutUs" href="#" onclick="aboutUs()">关于</a></li>
+<!--                <li><a id="toaboutUs" href="#" onclick="aboutUs()">关于</a></li>-->
             </ul>
         </div>
 <!--        <div id="user_div">-->
@@ -160,7 +160,8 @@
         <!--            选择文件-->
         <!-- 用于显示选中的图片 -->
         <div id="imagePreview" class="imagePreview">
-            <img alt="img" id="imggg" src="./new-ui/upload2.png" class="imggg">
+            <img alt="img" id="imggg" src="./new-ui/hai.jpg" class="imggg">
+
         </div>
         <!--            <div id="imagePreview"></div>-->
     </label>
@@ -205,7 +206,13 @@
     </div>
     <div id="dropdownDiv" style="display: none;" >
         <!--            <button id="dropBtn" onclick="toggleDropdown()" class="practiceBtn">汉字详情</button>-->
-        <button id="dropBtn" onclick="toggleDropdown()" class="bbtn">汉字详情</button>
+<!--        <button id="dropBtn" onclick="toggleDropdown()" class="bbtn">汉字详情</button>-->
+
+        <div class="dropdown-btn" id="dropBtn" onclick="toggleDropdown()">
+            汉字详情
+            <span id="arrow">&#9650;</span>
+        </div>
+
         <div id="dropdownContent" class="dropdown-content" style="display: none;">
             <p id="show_pinyin"></p>
             <p id="show_definition"></p>
@@ -324,6 +331,7 @@
     // 页面加载完成后执行操作
     window.onload = function () {
 
+        // document.getElementById("header").style.display = "none";
         // showSelection();
         // IntegrationRender();
 
@@ -335,7 +343,7 @@
         // showSelection();
         // back2home2();
 
-        document.getElementById("header").style.display = "flex";
+        // document.getElementById("header").style.display = "flex";
 
         var screenWidth = window.innerWidth;
         var screenHeight = window.innerHeight;
@@ -346,10 +354,10 @@
         canvas.width = screenWidth;
         canvas.height = screenHeight;
         // back2home2();
-        aboutUs();
+        // aboutUs();
         //展示军火
-        // showWelcomeElement()
-        // document.body.addEventListener("click", showGif);
+        showWelcomeElement()
+        document.body.addEventListener("click", showGif);
 //
     };
 
@@ -438,7 +446,9 @@
             document.body.removeEventListener("click", showGif)
             console.log("打印一下translate的左标现在是什么", PO)
 
-            // 不直接进入书写等待界面，直接进入功能选择界面
+            // 直接进入书写等待界面
+            document.getElementById("header").style.display = "flex";
+            selectComponentRender2();
             // writeOnload();
             // showSelection();
             // document.getElementById("header").style.display = "flex";
@@ -467,7 +477,7 @@
         switch (phase) {
             case 1:
                 // canvas.style.backgroundImage = 'url(' + "'./bk-img/bk1.png'" + ')';
-                canvas.style.backgroundImage = 'url(' + "'./new-ui/bg-img-01.png'" + ')';
+                canvas.style.backgroundImage = 'url(' + "'./new-ui/bg-img-01.webp'" + ')';
                 var clearbtn = document.getElementById('clearbtn');
                 clearbtn.style.right = canvasW / 10 + 'px';
                 clearbtn.style.bottom = canvasH / 13 + 'px';
@@ -477,7 +487,7 @@
                 break;
             case 2:
                 // canvas.style.backgroundImage = 'url(' + "'./bk-img/bk2.png'" + ')';
-                canvas.style.backgroundImage = 'url(' + "'./new-ui/bg-img-03.png'" + ')';
+                canvas.style.backgroundImage = 'url(' + "'./new-ui/bg-img-03.webp'" + ')';
                 //不显示“清除”按钮
                 var clearbtn = document.getElementById('clearbtn');
                 clearbtn.style.display = "none";
@@ -494,7 +504,7 @@
                 break;
             case 3:
                 // canvas.style.backgroundImage = 'url(' + "'./bk-img/bk3.png'" + ')';
-                canvas.style.backgroundImage = 'url(' + "'./new-ui/bg-img-04.png'" + ')';
+                canvas.style.backgroundImage = 'url(' + "'./new-ui/bg-img-04.webp'" + ')';
                 //不显示“重写”按钮
                 var backWriteCSS = document.getElementById('backWriteCSS')
                 backWriteCSS.style.display = "none"
@@ -504,7 +514,7 @@
                 break;
             case 99:
                 // canvas.style.backgroundImage = 'url(' + "'./bk-img/bk8.png'" + ')';
-                canvas.style.backgroundImage = 'url(' + "'./new-ui/bg-img-02.png'" + ')';
+                canvas.style.backgroundImage = 'url(' + "'./new-ui/bg-img-02.webp'" + ')';
                 //不显示“重写”按钮
                 var backWriteCSS = document.getElementById('backWriteCSS')
                 backWriteCSS.style.display = "none"
@@ -514,7 +524,7 @@
                 break;
             case 6:
                 // canvas.style.backgroundImage = 'url(' + "'./bk-img/bk6.png'" + ')';
-                canvas.style.backgroundImage = 'url(' + "'./new-ui/bg-img-06.png'" + ')';
+                canvas.style.backgroundImage = 'url(' + "'./new-ui/bg-img-06.webp'" + ')';
                 //跳转后要将清空输入框的内容，把它隐藏起来
                 const inputBox = document.getElementById("container");
                 inputBox.style.display = "none"
@@ -534,7 +544,7 @@
                 returnPreviousCSS.style.display = "none";
                 break;
             case 4:
-                canvas.style.backgroundImage = 'url(' + "'./new-ui/bg-img-07.png'" + ')';
+                canvas.style.backgroundImage = 'url(' + "'./new-ui/bg-img-07.webp'" + ')';
                 //不显示加载中的modal
                 var modal = document.getElementById("modal");
                 modal.classList.add("hidden");
@@ -562,7 +572,7 @@
                 break;
             case 5:
                 // canvas.style.backgroundImage = 'url(' + "'./bk-img/bk7_no_caption.png'" + ')';
-                canvas.style.backgroundImage = 'url(' + "'./new-ui/bg-img-08.png'" + ')';
+                canvas.style.backgroundImage = 'url(' + "'./new-ui/bg-img-08.webp'" + ')';
                 //不显示“重新生成”按钮
                 var reRenderCSS = document.getElementById('reRenderCSS')
                 reRenderCSS.style.display = "none";
@@ -609,8 +619,8 @@
                 hideAllChildren(document.getElementById("integrationContainer"));
                 hideAllChildren(document.getElementById("uploadContainer"));
                 hideAllChildren(document.getElementById("integrationShow"));
-                document.getElementById("integrationImg").src="./new-ui/origin-text2img.png";
-                document.getElementById("imggg").src="./new-ui/upload2.png";
+                document.getElementById("integrationImg").src="./new-ui/origin-text2img.webp";
+                document.getElementById("imggg").src="./new-ui/hai.jpg";
                 document.getElementById("integrationDownload").style.display="none";
                 document.getElementById("inputIntegrationRender").value="";
                 break;
@@ -685,7 +695,7 @@
         imgDiv=document.getElementById("image");
 
         imgDiv.style.display="block";
-        imgDiv.style.backgroundImage='url(' + "'./new-ui/bg-img-01.png'" + ')';
+        imgDiv.style.backgroundImage='url(' + "'./new-ui/bg-img-01.webp'" + ')';
         imgDiv.style.backgroundRepeat="no-repeat";
         imgDiv.style.backgroundSize="cover";
         imgDiv.style.backgroundPosition="center center";
@@ -742,11 +752,12 @@
         // selection2.style.display="none";
         // selection3.style.display="none";
         // selections.style.display="none";
+        imgDiv=document.getElementById("image");
         imgDiv.style.display="none";
         // document.getElementById("componentRender").style.display="block";
 
         var canvas = document.getElementById('canvas');
-        canvas.style.backgroundImage = 'url(' + "'./new-ui/bg-img-01.png'" + ')';
+        canvas.style.backgroundImage = 'url(' + "'./new-ui/bg-img-01.webp'" + ')';
 
         var screenWidth = window.innerWidth;
         var screenHeight = window.innerHeight;
@@ -784,7 +795,7 @@
         // componentRenderDiv.style.backgroundSize="cover";
         // componentRenderDiv.style.backgroundPosition="center center";
         var canvas = document.getElementById('canvas');
-        canvas.style.backgroundImage = 'url(' + "'./new-ui/bg-img-01.png'" + ')';
+        canvas.style.backgroundImage = 'url(' + "'./new-ui/bg-img-01.webp'" + ')';
         writeOnload();
     }
 
@@ -842,7 +853,7 @@
         imgDiv=document.getElementById("image");
         imgDiv.style.display="none";
         selections.style.display="block";
-        selections.style.backgroundImage='url(' + "'./new-ui/bg-img-01.png'" + ')';
+        selections.style.backgroundImage='url(' + "'./new-ui/bg-img-01.webp'" + ')';
         selections.style.backgroundRepeat="no-repeat";
         selections.style.backgroundSize="cover";
         selections.style.backgroundPosition="center center";
@@ -895,7 +906,7 @@
         selections.appendChild(selection2);
         selections.appendChild(selection3);
         selections.style.display="block";
-        selections.style.backgroundImage='url(' + "'./new-ui/bg-img-01.png'" + ')';
+        selections.style.backgroundImage='url(' + "'./new-ui/bg-img-01.webp'" + ')';
         selections.style.backgroundRepeat="no-repeat";
         selections.style.backgroundSize="cover";
         selections.style.backgroundPosition="center center";
@@ -961,6 +972,7 @@
         // textArea.style.display="flex";
         textArea.style.position="relative";
         textArea.style.textAlign="center";
+        // textArea.style.margin="auto"
         textArea.style.marginBottom="2%";
         textArea.style.marginLeft="auto";
         textArea.style.marginRight="auto";
@@ -1000,13 +1012,13 @@
 
 
         var dropdownDiv=document.getElementById("dropdownDiv");
-        dropdownDiv.style.top="40%";
+        dropdownDiv.style.top="32%";
         dropdownDiv.style.display="block";
         dropdownDiv.style.position="absolute";
 
-        var practiceBtn=document.getElementById("dropBtn");
-        practiceBtn.style.width=canvasW_tmp / 11 + 'px';
-        practiceBtn.style.height=canvasH_tmp / 12 + 'px';
+        // var practiceBtn=document.getElementById("dropBtn");
+        // practiceBtn.style.width=canvasW_tmp / 11 + 'px';
+        // practiceBtn.style.height=canvasH_tmp / 12 + 'px';
 
         var practiceRedoBtn=document.getElementById("practiceRedoBtn");
         practiceRedoBtn.style.width=canvasW_tmp / 11 + 'px';
@@ -1195,7 +1207,12 @@
         // inputDiv.style.zIndex="99";
 
 
-        var integrationInputBoxLeft=40,inputBoxWid=18,integrationInputBoxTop=20;
+        var integrationInputBoxLeft=32,inputBoxWid=25,integrationInputBoxTop=20;
+
+
+        const canvas_content_tmp = canvas.getBoundingClientRect()//获取画布的大小
+        var canvasW_tmp = canvas_content_tmp.width;
+        var canvasH_tmp = canvas_content_tmp.height;
 
         integrationInputBox=document.getElementById("inputIntegrationRender");
         integrationInputBox.classList.add("inputRenderLabelBar");
@@ -1206,18 +1223,22 @@
         integrationInputBox.style.position="absolute";
         integrationInputBox.style.display="block";
         integrationInputBox.style.width=String(inputBoxWid)+"%";
-        integrationInputBox.style.height="45px";
+        integrationInputBox.style.height="70px";
 
 
 
         integrationInputButton=document.getElementById("integrationInputButton");
         integrationInputButton.classList.add("inputRenderLabelBtn");
         integrationInputButton.innerText="开始渲染";
+        integrationInputButton.style.fontSize="40px";
         integrationInputButton.addEventListener("click",StartRender);
         integrationInputButton.style.top=String(integrationInputBoxTop)+"%";
-        integrationInputButton.style.left=String(integrationInputBoxLeft+inputBoxWid+8)+"%";
+        integrationInputButton.style.left=String(integrationInputBoxLeft+inputBoxWid+3)+"%";
         integrationInputButton.style.position="absolute";
-        integrationInputButton.style.width="150px";
+        integrationInputButton.style.width="200px";
+        integrationInputButton.style.height="75px";
+        // integrationInputButton.style.width=canvasW_tmp / 11 + 'px';
+        // integrationInputButton.style.height=canvasH_tmp / 12 + 'px';
 
         integrationInputButton.style.paddingBottom="10px";
         integrationInputButton.style.display="block";
@@ -1254,7 +1275,7 @@
         uploadImageLableDiv.style.width=parseFloat(computedStyle.width)+'px';
         uploadImageLableDiv.style.height=parseFloat(computedStyle.height)+'px';
 
-        document.getElementById("imggg").src="./new-ui/upload2.png";
+        document.getElementById("imggg").src="./new-ui/hai.jpg";
 
 
 
@@ -1554,7 +1575,7 @@
                 var newDiv = document.createElement("div");
                 newDiv.className = "word-font__item";
                 var newSpan1 = document.createElement("span"), newSpan2 = document.createElement("span");
-                var srcDir='./'+wordType[i]+'/'+imgName;
+                var srcDir='./ttf/'+wordType[i]+'/'+imgName;
                 var imageDisplay = document.createElement('img');
                 imageDisplay.src = srcDir;
                 imageDisplay.className="img_style";

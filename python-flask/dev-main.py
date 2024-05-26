@@ -4,6 +4,7 @@ import os
 from traceback import print_tb
 import urllib.request
 import numpy as np
+import random
 from flask import Flask, request, json
 from flask import jsonify
 import cv2 as cv
@@ -587,7 +588,7 @@ def integration_render():
 def getList():
     print("in getList")
     listName = request.args.get('listName')
-
+    listName="result"
     # print(listName)
 
     # 指定文件夹路径
@@ -616,6 +617,10 @@ def getList():
         if len(row) == 0:
             continue
         content.append(row)
+
+    random.shuffle(content)
+    content=content[:150]
+    print(len(content))
 
     ret={"list":content,
          "characters":[]}

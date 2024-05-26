@@ -1964,11 +1964,15 @@ const onRedo=()=>{
 }
 
 const toggleDropdown=()=>{
+
+  var arrow = document.getElementById("arrow");
   var dropdownContent = document.getElementById("dropdownContent");
   if (dropdownContent.style.display === "block") {
     dropdownContent.style.display = "none";
+    arrow.innerHTML = "&#9650;"; // 向上箭头
   } else {
     dropdownContent.style.display = "block";
+    arrow.innerHTML = "&#9660;"; // 向下箭头
   }
 
 }
